@@ -7,10 +7,26 @@ import { fail } from './utils/response.js';
 
 export function buildApp() {
   const app = express();
+  const allowOrigin = config.corsOrigin || '*';
   const corsOptions = {
-    origin: config.corsOrigin === '*' ? true : config.corsOrigin,
+    origin: allowOrigin === '*' ? true : allowOrigin,
     methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS']
   };
+
+  app.use((req, res, next) => {
+    const reqOrigin = req.headers.origin;
+    const isAllowedOrigin = allowOrigin === '*' || (reqOrigin && reqOrigin === allowOrigin);
+    if (isAllowedOrigin) {
+      res.setHeader('Access-Control-Allow-Origin', allowOrigin === '*' ? '*' : reqOrigin);
+      res.setHeader('Vary', 'Origin');
+    }
+    res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type,Authorization,x-user-id,x-user-email,x-user-role');
+    if (req.method === 'OPTIONS') {
+      return res.status(204).end();
+    }
+    return next();
+  });
 
   app.use(cors(corsOptions));
   app.options('*', cors(corsOptions));
