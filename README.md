@@ -118,17 +118,21 @@ python3 -m http.server 4173
 
 5. Open `http://localhost:4173`.
 
-## Deployment (Current Plan)
+## Deployment (No Render)
 
-- Frontend: Vercel (root dir `web`)
-- Backend: Render Web Service (root dir `api`)
+- Frontend: Vercel project (root dir `web`)
+- Backend API: Vercel project (root dir `api`)
 - Database: Supabase Postgres
 
-Required backend env vars:
+Required backend env vars (in the API Vercel project):
 
 - `DATABASE_URL` (Supabase connection string, usually with `sslmode=require`)
 - `CORS_ORIGIN` (your Vercel production URL, e.g. `https://<project>.vercel.app`)
 
-Also set frontend API base in [`web/index.html`](/Users/zachsu/Downloads/off-tracker-website/web/index.html) to your Render API URL:
+Also set frontend API base in [`web/index.html`](/Users/zachsu/Downloads/off-tracker-website/web/index.html) to your API Vercel URL:
 
-- `window.OFF_TRACKER_API_BASE = 'https://<render-service>.onrender.com/api';`
+- `window.OFF_TRACKER_API_BASE = 'https://<api-project>.vercel.app/api';`
+
+Backend Vercel entrypoint is implemented at:
+
+- [`api/api/[...route].js`](/Users/zachsu/Downloads/off-tracker-website/api/api/[...route].js)

@@ -63,3 +63,20 @@ If omitted, it defaults to a local `ADMIN` context for development.
 
 ## Frontend Connection
 Set frontend API base to `http://localhost:8787/api`, then call `GET /api/bootstrap` for initial state and use mutation endpoints for changes.
+
+## Deploy On Vercel
+You can deploy this backend without Render:
+
+1. Create a Vercel project with **Root Directory** set to `api`.
+2. Set environment variables:
+   - `DATABASE_URL`
+   - `CORS_ORIGIN`
+3. Deploy.
+
+This repo includes a Vercel serverless entrypoint:
+
+- [`api/[...route].js`](/Users/zachsu/Downloads/off-tracker-website/api/api/[...route].js)
+
+After deployment, API endpoints are available under:
+
+- `https://<your-api-project>.vercel.app/api/*`
